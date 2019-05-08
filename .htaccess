@@ -1,0 +1,73 @@
+
+#AddType text/cache-manifest manifest
+AddDefaultCharset UTF-8
+RewriteEngine on
+RewriteBase /
+
+#RewriteCond %{HTTP_HOST} !^demo3.net-profil\.com$ [NC]
+#RewriteRule ^(.*)$ http://demo3.net-profil.com/$1 [R=301,L]
+
+
+RewriteRule ^$ /frontend/index.php?app=frontend&module=carat&recupsession=1 [QSA,L]
+
+RewriteRule ^404$ /frontend/index.php?app=frontend&module=404 [QSA,L]
+
+#[ -biens- ]
+RewriteRule ^liste-proprietes/page/([0-9]+)$ /frontend/index.php?app=frontend&module=carat&action=biens&page=$1 [QSA,L]
+RewriteRule ^liste-proprietes$ /frontend/index.php?app=frontend&module=carat&action=biens [QSA,L]
+
+#type
+RewriteRule ^acheter-vendre-louer/(.*)/page/([0-9]+)$ /frontend/index.php?app=frontend&module=carat&action=biens&simple=1&type=$1&page=$2 [QSA,L]
+#RewriteRule ^louer/(.*)/page/([0-9]+)$ /frontend/index.php?app=frontend&module=carat&action=biens&simple=1&type=$1&page=$2 [QSA,L]
+RewriteRule ^acheter-vendre-louer/(.*)$ /frontend/index.php?app=frontend&module=carat&action=biens&simple=1&type=$1 [QSA,L]
+#RewriteRule ^louer/(.*)$ /frontend/index.php?app=frontend&module=carat&action=biens&simple=1&type=$1 [QSA,L]
+
+#details
+RewriteRule ^(.*)/acheter-vendre/(.*)/(.*)$ /frontend/index.php?app=frontend&module=carat&action=details&id_encode=$3&recupsession=1 [QSA,L]
+RewriteRule ^(.*)/louer/(.*)/(.*)$ /frontend/index.php?app=frontend&module=carat&action=details&id_encode=$3&recupsession=1 [QSA,L]
+
+#typeville
+RewriteRule ^(.*)/acheter-vendre-louer/(.*)/page/([0-9]+)$ /frontend/index.php?app=frontend&module=carat&action=biens&simple=1&type=$2&ville=$1&page=$3 [QSA,L]
+#RewriteRule ^(.*)/louer/(.*)/page/([0-9]+)$ /frontend/index.php?app=frontend&module=carat&action=biens&simple=1&type=$2&ville=$1&page=$3 [QSA,L]
+RewriteRule ^(.*)/acheter-vendre-louer/(.*)$ /frontend/index.php?app=frontend&module=carat&action=biens&simple=1&type=$2&ville=$1 [QSA,L]
+#RewriteRule ^(.*)/louer/(.*)$ /frontend/index.php?app=frontend&module=carat&action=biens&simple=1&type=$2&ville=$1 [QSA,L]
+
+#[ -alertes- ]
+RewriteRule ^alertes$ /frontend/index.php?app=frontend&module=carat&action=alertes&recupsession=1 [QSA,L]
+RewriteRule ^alertes/suppression/(.*)$ /frontend/index.php?app=frontend&module=carat&action=suppressionalerte&id_encode=$1 [QSA,L]
+
+#[ -panier- ]
+RewriteRule ^ma-selection/page/(.*)$ /frontend/index.php?app=frontend&module=carat&action=panier&recupsession=1&page=$1 [QSA,L]
+RewriteRule ^ma-selection$ /frontend/index.php?app=frontend&module=carat&action=panier&recupsession=1 [QSA,L]
+
+#[ -vendeurs- ]
+RewriteRule ^vendre-votre-bien$ /frontend/index.php?app=frontend&module=carat&action=vendeurs [QSA,L]
+
+#[ -acheteurs- ]
+RewriteRule ^agent-de-recherche /frontend/index.php?app=frontend&module=carat&action=acheteurs&recupsession=1 [QSA,L]
+
+#[ -savoirfaire- ]
+RewriteRule ^savoir-faire$ /frontend/index.php?app=frontend&module=carat&action=savoirfaire&recupsession=1 [QSA,L]
+
+#[ -nostarifs- ]
+RewriteRule ^nos-tarifs$ /frontend/index.php?app=frontend&module=carat&action=tarifs [QSA,L]
+
+#[ -outilcalculette- ]
+RewriteRule ^outil-calculette$ /frontend/index.php?app=frontend&module=carat&action=outilcalculette [QSA,L]
+
+#[ -courrier- ]
+RewriteRule ^courriel-vendre-votre-bien$ /frontend/index.php?app=frontend&module=courriel&action=courrielvendrevotrebien [QSA,L]
+RewriteRule ^envoi-courriel-contact$ /frontend/index.php?app=frontend&module=courriel&action=envoicourrielcontact [QSA,L]
+RewriteRule ^envoi-courriel-bien-panier$ /frontend/index.php?app=frontend&module=courriel&action=envoicourrielbienpanier [QSA,L]
+RewriteRule ^recevoir-dossier-complet$ /frontend/index.php?app=frontend&module=courriel&action=recevoirdossiercomplet [QSA,L]
+RewriteRule ^obtenir-un-rendez-vous$ /frontend/index.php?app=frontend&module=courriel&action=obtenirunrendezvous [QSA,L]
+RewriteRule ^etre-appeler-au-plus-vite$ /frontend/index.php?app=frontend&module=courriel&action=etreappelerauplusvite [QSA,L]
+
+#AuthUserFile /var/www/html/com/net-profil/subdomains/demo3/.htpasswd
+#AuthGroupFile /dev/null
+#AuthName ByPassword
+#AuthType Basic
+#
+#<limit GET>
+#require valid-user
+#</Limit>
