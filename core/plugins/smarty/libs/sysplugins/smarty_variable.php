@@ -2,32 +2,29 @@
 
 /**
  * class for the Smarty variable object
- * This class defines the Smarty variable object
- *
- * @package    Smarty
- * @subpackage Template
+ * This class defines the Smarty variable object.
  */
 class Smarty_Variable
 {
     /**
-     * template variable
+     * template variable.
      *
      * @var mixed
      */
     public $value = null;
 
     /**
-     * if true any output of this variable will be not cached
+     * if true any output of this variable will be not cached.
      *
-     * @var boolean
+     * @var bool
      */
     public $nocache = false;
 
     /**
-     * create Smarty variable object
+     * create Smarty variable object.
      *
-     * @param mixed   $value   the value to assign
-     * @param boolean $nocache if true any output of this variable will be not cached
+     * @param mixed $value   the value to assign
+     * @param bool  $nocache if true any output of this variable will be not cached
      */
     public function __construct($value = null, $nocache = false)
     {
@@ -36,7 +33,7 @@ class Smarty_Variable
     }
 
     /**
-     * <<magic>> String conversion
+     * <<magic>> String conversion.
      *
      * @return string
      */
@@ -45,4 +42,3 @@ class Smarty_Variable
         return (string) $this->value;
     }
 }
-

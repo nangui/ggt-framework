@@ -1,9 +1,6 @@
 <?php
 /**
- * Smarty plugin to format text blocks
- *
- * @package    Smarty
- * @subpackage PluginsBlock
+ * Smarty plugin to format text blocks.
  */
 /**
  * Smarty {textformat}{/textformat} block plugin
@@ -11,7 +8,7 @@
  * Name:     textformat
  * Purpose:  format text a certain way with preset styles
  *           or custom wrap/indent settings
- * Params:
+ * Params:.
  *
  * - style         - string (email)
  * - indent        - integer (0)
@@ -27,11 +24,13 @@
  * @param array                    $params   parameters
  * @param string                   $content  contents of the block
  * @param Smarty_Internal_Template $template template object
- * @param boolean                  &$repeat  repeat flag
+ * @param bool                     &$repeat  repeat flag
+ *
+ * @throws \SmartyException
  *
  * @return string content re-formatted
+ *
  * @author Monte Ohrt <monte at ohrt dot com>
- * @throws \SmartyException
  */
 function smarty_block_textformat($params, $content, Smarty_Internal_Template $template, &$repeat)
 {
@@ -39,8 +38,8 @@ function smarty_block_textformat($params, $content, Smarty_Internal_Template $te
         return;
     }
     if (Smarty::$_MBSTRING) {
-        $template->_checkPlugins(array(array('function' => 'smarty_modifier_mb_wordwrap',
-                                             'file' => SMARTY_PLUGINS_DIR . 'modifier.mb_wordwrap.php')));
+        $template->_checkPlugins([['function'       => 'smarty_modifier_mb_wordwrap',
+                                             'file' => SMARTY_PLUGINS_DIR.'modifier.mb_wordwrap.php', ]]);
     }
 
     $style = null;
@@ -88,13 +87,13 @@ function smarty_block_textformat($params, $content, Smarty_Internal_Template $te
         }
         // convert mult. spaces & special chars to single space
         $_paragraph =
-            preg_replace(array('!\s+!' . Smarty::$_UTF8_MODIFIER,
-                               '!(^\s+)|(\s+$)!' . Smarty::$_UTF8_MODIFIER),
-                         array(' ',
-                               ''), $_paragraph);
+            preg_replace(['!\s+!'.Smarty::$_UTF8_MODIFIER,
+                               '!(^\s+)|(\s+$)!'.Smarty::$_UTF8_MODIFIER, ],
+                         [' ',
+                               '', ], $_paragraph);
         // indent first line
         if ($indent_first > 0) {
-            $_paragraph = str_repeat($indent_char, $indent_first) . $_paragraph;
+            $_paragraph = str_repeat($indent_char, $indent_first).$_paragraph;
         }
         // wordwrap sentences
         if (Smarty::$_MBSTRING) {
@@ -107,7 +106,7 @@ function smarty_block_textformat($params, $content, Smarty_Internal_Template $te
             $_paragraph = preg_replace('!^!m', str_repeat($indent_char, $indent), $_paragraph);
         }
     }
-    $_output = implode($wrap_char . $wrap_char, $_paragraphs);
+    $_output = implode($wrap_char.$wrap_char, $_paragraphs);
 
     if ($assign) {
         $template->assign($assign, $_output);

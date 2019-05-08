@@ -1,9 +1,7 @@
 <?php
 /**
- * Smarty plugin
+ * Smarty plugin.
  *
- * @package    Smarty
- * @subpackage Security
  * @author     Uwe Tews
  */
 
@@ -17,7 +15,7 @@
  */
 
 /**
- * This class does contain the security settings
+ * This class does contain the security settings.
  */
 class Smarty_Security
 {
@@ -29,9 +27,9 @@ class Smarty_Security
      *   <li>Smarty::PHP_QUOTE    -> escape tags as entities</li>
      *   <li>Smarty::PHP_REMOVE   -> remove php tags</li>
      *   <li>Smarty::PHP_ALLOW    -> execute php tags</li>
-     * </ul>
+     * </ul>.
      *
-     * @var integer
+     * @var int
      */
     public $php_handling = Smarty::PHP_PASSTHRU;
 
@@ -41,7 +39,7 @@ class Smarty_Security
      *
      * @var array
      */
-    public $secure_dir = array();
+    public $secure_dir = [];
 
     /**
      * This is an array of directories where trusted php scripts reside.
@@ -49,21 +47,21 @@ class Smarty_Security
      *
      * @var array
      */
-    public $trusted_dir = array();
+    public $trusted_dir = [];
 
     /**
-     * List of regular expressions (PCRE) that include trusted URIs
+     * List of regular expressions (PCRE) that include trusted URIs.
      *
      * @var array
      */
-    public $trusted_uri = array();
+    public $trusted_uri = [];
 
     /**
-     * List of trusted constants names
+     * List of trusted constants names.
      *
      * @var array
      */
-    public $trusted_constants = array();
+    public $trusted_constants = [];
 
     /**
      * This is an array of trusted static classes.
@@ -72,7 +70,7 @@ class Smarty_Security
      *
      * @var array
      */
-    public $static_classes = array();
+    public $static_classes = [];
 
     /**
      * This is an nested array of trusted classes and static methods.
@@ -86,7 +84,7 @@ class Smarty_Security
      *
      * @var array
      */
-    public $trusted_static_methods = array();
+    public $trusted_static_methods = [];
 
     /**
      * This is an array of trusted static properties.
@@ -100,7 +98,7 @@ class Smarty_Security
      *
      * @var array
      */
-    public $trusted_static_properties = array();
+    public $trusted_static_properties = [];
 
     /**
      * This is an array of trusted PHP functions.
@@ -109,7 +107,7 @@ class Smarty_Security
      *
      * @var array
      */
-    public $php_functions = array('isset', 'empty', 'count', 'sizeof', 'in_array', 'is_array', 'time',);
+    public $php_functions = ['isset', 'empty', 'count', 'sizeof', 'in_array', 'is_array', 'time'];
 
     /**
      * This is an array of trusted PHP modifiers.
@@ -118,7 +116,7 @@ class Smarty_Security
      *
      * @var array
      */
-    public $php_modifiers = array('escape', 'count', 'nl2br',);
+    public $php_modifiers = ['escape', 'count', 'nl2br'];
 
     /**
      * This is an array of allowed tags.
@@ -126,7 +124,7 @@ class Smarty_Security
      *
      * @var array
      */
-    public $allowed_tags = array();
+    public $allowed_tags = [];
 
     /**
      * This is an array of disabled tags.
@@ -134,7 +132,7 @@ class Smarty_Security
      *
      * @var array
      */
-    public $disabled_tags = array();
+    public $disabled_tags = [];
 
     /**
      * This is an array of allowed modifier plugins.
@@ -142,7 +140,7 @@ class Smarty_Security
      *
      * @var array
      */
-    public $allowed_modifiers = array();
+    public $allowed_modifiers = [];
 
     /**
      * This is an array of disabled modifier plugins.
@@ -150,14 +148,14 @@ class Smarty_Security
      *
      * @var array
      */
-    public $disabled_modifiers = array();
+    public $disabled_modifiers = [];
 
     /**
      * This is an array of disabled special $smarty variables.
      *
      * @var array
      */
-    public $disabled_special_smarty_vars = array();
+    public $disabled_special_smarty_vars = [];
 
     /**
      * This is an array of trusted streams.
@@ -166,91 +164,91 @@ class Smarty_Security
      *
      * @var array
      */
-    public $streams = array('file');
+    public $streams = ['file'];
 
     /**
-     * + flag if constants can be accessed from template
+     * + flag if constants can be accessed from template.
      *
-     * @var boolean
+     * @var bool
      */
     public $allow_constants = true;
 
     /**
-     * + flag if super globals can be accessed from template
+     * + flag if super globals can be accessed from template.
      *
-     * @var boolean
+     * @var bool
      */
     public $allow_super_globals = true;
 
     /**
-     * max template nesting level
+     * max template nesting level.
      *
      * @var int
      */
     public $max_template_nesting = 0;
 
     /**
-     * current template nesting level
+     * current template nesting level.
      *
      * @var int
      */
     private $_current_template_nesting = 0;
 
     /**
-     * Cache for $resource_dir lookup
+     * Cache for $resource_dir lookup.
      *
      * @var array
      */
-    protected $_resource_dir = array();
+    protected $_resource_dir = [];
 
     /**
-     * Cache for $template_dir lookup
+     * Cache for $template_dir lookup.
      *
      * @var array
      */
-    protected $_template_dir = array();
+    protected $_template_dir = [];
 
     /**
-     * Cache for $config_dir lookup
+     * Cache for $config_dir lookup.
      *
      * @var array
      */
-    protected $_config_dir = array();
+    protected $_config_dir = [];
 
     /**
-     * Cache for $secure_dir lookup
+     * Cache for $secure_dir lookup.
      *
      * @var array
      */
-    protected $_secure_dir = array();
+    protected $_secure_dir = [];
 
     /**
-     * Cache for $php_resource_dir lookup
+     * Cache for $php_resource_dir lookup.
      *
      * @var array
      */
     protected $_php_resource_dir = null;
 
     /**
-     * Cache for $trusted_dir lookup
+     * Cache for $trusted_dir lookup.
      *
      * @var array
      */
     protected $_trusted_dir = null;
 
     /**
-     * Cache for include path status
+     * Cache for include path status.
      *
      * @var bool
      */
     protected $_include_path_status = false;
 
     /**
-     * Cache for $_include_array lookup
+     * Cache for $_include_array lookup.
      *
      * @var array
      */
-    protected $_include_dir = array();
+    protected $_include_dir = [];
 
     /**
      * @param Smarty $smarty
@@ -258,18 +256,19 @@ class Smarty_Security
     public function __construct($smarty)
     {
         $this->smarty = $smarty;
-        $this->smarty->_cache[ 'template_dir_new' ] = true;
-        $this->smarty->_cache[ 'config_dir_new' ] = true;
+        $this->smarty->_cache['template_dir_new'] = true;
+        $this->smarty->_cache['config_dir_new'] = true;
     }
 
     /**
      * Check if PHP function is trusted.
      *
-     * @param  string $function_name
-     * @param  object $compiler compiler object
+     * @param string $function_name
+     * @param object $compiler      compiler object
      *
-     * @return boolean                 true if function is trusted
      * @throws SmartyCompilerException if php function is not trusted
+     *
+     * @return bool true if function is trusted
      */
     public function isTrustedPhpFunction($function_name, $compiler)
     {
@@ -287,11 +286,12 @@ class Smarty_Security
     /**
      * Check if static class is trusted.
      *
-     * @param  string $class_name
-     * @param  object $compiler compiler object
+     * @param string $class_name
+     * @param object $compiler   compiler object
      *
-     * @return boolean                 true if class is trusted
      * @throws SmartyCompilerException if static class is not trusted
+     *
+     * @return bool true if class is trusted
      */
     public function isTrustedStaticClass($class_name, $compiler)
     {
@@ -309,50 +309,53 @@ class Smarty_Security
     /**
      * Check if static class method/property is trusted.
      *
-     * @param  string $class_name
-     * @param  string $params
-     * @param  object $compiler compiler object
+     * @param string $class_name
+     * @param string $params
+     * @param object $compiler   compiler object
      *
-     * @return boolean                 true if class method is trusted
      * @throws SmartyCompilerException if static class method is not trusted
+     *
+     * @return bool true if class method is trusted
      */
     public function isTrustedStaticClassAccess($class_name, $params, $compiler)
     {
-        if (!isset($params[ 2 ])) {
+        if (!isset($params[2])) {
             // fall back
             return $this->isTrustedStaticClass($class_name, $compiler);
         }
-        if ($params[ 2 ] === 'method') {
+        if ($params[2] === 'method') {
             $allowed = $this->trusted_static_methods;
-            $name = substr($params[ 0 ], 0, strpos($params[ 0 ], '('));
+            $name = substr($params[0], 0, strpos($params[0], '('));
         } else {
             $allowed = $this->trusted_static_properties;
             // strip '$'
-            $name = substr($params[ 0 ], 1);
+            $name = substr($params[0], 1);
         }
         if (isset($allowed)) {
             if (empty($allowed)) {
                 // fall back
                 return $this->isTrustedStaticClass($class_name, $compiler);
             }
-            if (isset($allowed[ $class_name ]) &&
-                (empty($allowed[ $class_name ]) || in_array($name, $allowed[ $class_name ]))
+            if (isset($allowed[$class_name]) &&
+                (empty($allowed[$class_name]) || in_array($name, $allowed[$class_name]))
             ) {
                 return true;
             }
         }
         $compiler->trigger_template_error("access to static class '{$class_name}' {$params[2]} '{$name}' not allowed by security setting");
+
         return false; // should not, but who knows what happens to the compiler in the future?
     }
 
     /**
      * Check if PHP modifier is trusted.
      *
-     * @param  string $modifier_name
-     * @param  object $compiler compiler object
+     * @param string $modifier_name
+     * @param object $compiler      compiler object
      *
-     * @return boolean                 true if modifier is trusted
      * @throws SmartyCompilerException if modifier is not trusted
+     *
+     * @return bool true if modifier is trusted
      */
     public function isTrustedPhpModifier($modifier_name, $compiler)
     {
@@ -370,20 +373,21 @@ class Smarty_Security
     /**
      * Check if tag is trusted.
      *
-     * @param  string $tag_name
-     * @param  object $compiler compiler object
+     * @param string $tag_name
+     * @param object $compiler compiler object
      *
-     * @return boolean                 true if tag is trusted
      * @throws SmartyCompilerException if modifier is not trusted
+     *
+     * @return bool true if tag is trusted
      */
     public function isTrustedTag($tag_name, $compiler)
     {
         // check for internal always required tags
         if (in_array($tag_name,
-                     array('assign', 'call', 'private_filter', 'private_block_plugin', 'private_function_plugin',
+                     ['assign', 'call', 'private_filter', 'private_block_plugin', 'private_function_plugin',
                            'private_object_block_function', 'private_object_function', 'private_registered_function',
                            'private_registered_block', 'private_special_variable', 'private_print_expression',
-                           'private_modifier'))) {
+                           'private_modifier', ])) {
             return true;
         }
         // check security settings
@@ -405,11 +409,12 @@ class Smarty_Security
     /**
      * Check if special $smarty variable is trusted.
      *
-     * @param  string $var_name
-     * @param  object $compiler compiler object
+     * @param string $var_name
+     * @param object $compiler compiler object
      *
-     * @return boolean                 true if tag is trusted
      * @throws SmartyCompilerException if modifier is not trusted
+     *
+     * @return bool true if tag is trusted
      */
     public function isTrustedSpecialSmartyVar($var_name, $compiler)
     {
@@ -426,16 +431,17 @@ class Smarty_Security
     /**
      * Check if modifier plugin is trusted.
      *
-     * @param  string $modifier_name
-     * @param  object $compiler compiler object
+     * @param string $modifier_name
+     * @param object $compiler      compiler object
      *
-     * @return boolean                 true if tag is trusted
      * @throws SmartyCompilerException if modifier is not trusted
+     *
+     * @return bool true if tag is trusted
      */
     public function isTrustedModifier($modifier_name, $compiler)
     {
         // check for internal always allowed modifier
-        if (in_array($modifier_name, array('default'))) {
+        if (in_array($modifier_name, ['default'])) {
             return true;
         }
         // check security settings
@@ -459,39 +465,43 @@ class Smarty_Security
     }
 
     /**
-     * Check if constants are enabled or trusted
+     * Check if constants are enabled or trusted.
      *
-     * @param  string $const    constant name
-     * @param  object $compiler compiler object
+     * @param string $const    constant name
+     * @param object $compiler compiler object
      *
      * @return bool
      */
     public function isTrustedConstant($const, $compiler)
     {
-        if (in_array($const, array('true', 'false', 'null'))) {
+        if (in_array($const, ['true', 'false', 'null'])) {
             return true;
         }
         if (!empty($this->trusted_constants)) {
             if (!in_array(strtolower($const), $this->trusted_constants)) {
                 $compiler->trigger_template_error("Security: access to constant '{$const}' not permitted");
+
                 return false;
             }
+
             return true;
         }
         if ($this->allow_constants) {
             return true;
         }
-        $compiler->trigger_template_error("Security: access to constants not permitted");
+        $compiler->trigger_template_error('Security: access to constants not permitted');
+
         return false;
     }
 
     /**
      * Check if stream is trusted.
      *
-     * @param  string $stream_name
+     * @param string $stream_name
      *
-     * @return boolean         true if stream is trusted
      * @throws SmartyException if stream is not trusted
+     *
+     * @return bool true if stream is trusted
      */
     public function isTrustedStream($stream_name)
     {
@@ -505,16 +515,17 @@ class Smarty_Security
     /**
      * Check if directory of file resource is trusted.
      *
-     * @param  string   $filepath
+     * @param string    $filepath
      * @param null|bool $isConfig
      *
-     * @return bool true if directory is trusted
      * @throws \SmartyException if directory is not trusted
+     *
+     * @return bool true if directory is trusted
      */
     public function isTrustedResourceDir($filepath, $isConfig = null)
     {
         if ($this->_include_path_status !== $this->smarty->use_include_path) {
-            $_dir = $this->smarty->use_include_path ? $this->smarty->ext->_getIncludePath->getIncludePathDirs($this->smarty) : array();
+            $_dir = $this->smarty->use_include_path ? $this->smarty->ext->_getIncludePath->getIncludePathDirs($this->smarty) : [];
             if ($this->_include_dir !== $_dir) {
                 $this->_updateResourceDir($this->_include_dir, $_dir);
                 $this->_include_dir = $_dir;
@@ -536,17 +547,18 @@ class Smarty_Security
             }
         }
         if ($this->_secure_dir !== $this->secure_dir) {
-            $this->secure_dir = (array)$this->secure_dir;
-            foreach($this->secure_dir as $k => $d) {
-                $this->secure_dir[$k] = $this->smarty->_realpath($d.DIRECTORY_SEPARATOR,true);
+            $this->secure_dir = (array) $this->secure_dir;
+            foreach ($this->secure_dir as $k => $d) {
+                $this->secure_dir[$k] = $this->smarty->_realpath($d.DIRECTORY_SEPARATOR, true);
             }
             $this->_updateResourceDir($this->_secure_dir, $this->secure_dir);
             $this->_secure_dir = $this->secure_dir;
         }
-        $addPath =  $this->_checkDir($filepath, $this->_resource_dir);
+        $addPath = $this->_checkDir($filepath, $this->_resource_dir);
         if ($addPath !== false) {
-           $this->_resource_dir = array_merge($this->_resource_dir, $addPath);
+            $this->_resource_dir = array_merge($this->_resource_dir, $addPath);
         }
+
         return true;
     }
 
@@ -556,17 +568,19 @@ class Smarty_Security
      * So "http://username:password@hello.world.example.org:8080/some-path?some=query-string"
      * is reduced to "http://hello.world.example.org" prior to applying the patters from {@link $trusted_uri}.
      *
-     * @param  string $uri
+     * @param string $uri
      *
-     * @return boolean         true if URI is trusted
      * @throws SmartyException if URI is not trusted
+     *
+     * @return bool true if URI is trusted
+     *
      * @uses $trusted_uri for list of patterns to match against $uri
      */
     public function isTrustedUri($uri)
     {
         $_uri = parse_url($uri);
-        if (!empty($_uri[ 'scheme' ]) && !empty($_uri[ 'host' ])) {
-            $_uri = $_uri[ 'scheme' ] . '://' . $_uri[ 'host' ];
+        if (!empty($_uri['scheme']) && !empty($_uri['host'])) {
+            $_uri = $_uri['scheme'].'://'.$_uri['host'];
             foreach ($this->trusted_uri as $pattern) {
                 if (preg_match($pattern, $_uri)) {
                     return true;
@@ -580,10 +594,11 @@ class Smarty_Security
     /**
      * Check if directory of file resource is trusted.
      *
-     * @param  string $filepath
+     * @param string $filepath
      *
-     * @return boolean         true if directory is trusted
      * @throws SmartyException if PHP directory is not trusted
+     *
+     * @return bool true if directory is trusted
      */
     public function isTrustedPHPDir($filepath)
     {
@@ -593,72 +608,76 @@ class Smarty_Security
 
         // check if index is outdated
         if (!$this->_trusted_dir || $this->_trusted_dir !== $this->trusted_dir) {
-            $this->_php_resource_dir = array();
+            $this->_php_resource_dir = [];
 
             $this->_trusted_dir = $this->trusted_dir;
             foreach ((array) $this->trusted_dir as $directory) {
-                $directory = $this->smarty->_realpath($directory . DIRECTORY_SEPARATOR, true);
-                $this->_php_resource_dir[ $directory ] = true;
+                $directory = $this->smarty->_realpath($directory.DIRECTORY_SEPARATOR, true);
+                $this->_php_resource_dir[$directory] = true;
             }
         }
-        $addPath =  $this->_checkDir($filepath, $this->_php_resource_dir);
+        $addPath = $this->_checkDir($filepath, $this->_php_resource_dir);
         if ($addPath !== false) {
-           $this->_php_resource_dir = array_merge($this->_php_resource_dir, $addPath);
+            $this->_php_resource_dir = array_merge($this->_php_resource_dir, $addPath);
         }
-         return true;
+
+        return true;
     }
 
     /**
-     * Remove old directories and its sub folders, add new directories
+     * Remove old directories and its sub folders, add new directories.
      *
      * @param array $oldDir
      * @param array $newDir
      */
-    private function _updateResourceDir($oldDir, $newDir) {
+    private function _updateResourceDir($oldDir, $newDir)
+    {
         foreach ($oldDir as $directory) {
             $directory = $this->smarty->_realpath($directory, true);
             $length = strlen($directory);
             foreach ($this->_resource_dir as $dir) {
-                if (substr($dir, 0,$length) === $directory) {
-                    unset($this->_resource_dir[ $dir ]);
+                if (substr($dir, 0, $length) === $directory) {
+                    unset($this->_resource_dir[$dir]);
                 }
             }
         }
         foreach ($newDir as $directory) {
             $directory = $this->smarty->_realpath($directory, true);
-            $this->_resource_dir[ $directory ] = true;
+            $this->_resource_dir[$directory] = true;
         }
     }
+
     /**
-     * Check if file is inside a valid directory
+     * Check if file is inside a valid directory.
      *
      * @param string $filepath
-     * @param array  $dirs valid directories
+     * @param array  $dirs     valid directories
+     *
+     * @throws \SmartyException
      *
      * @return array|bool
-     * @throws \SmartyException
      */
     private function _checkDir($filepath, $dirs)
     {
-        $directory = dirname($filepath) . DIRECTORY_SEPARATOR;
-        if (isset($dirs[ $directory ])) {
+        $directory = dirname($filepath).DIRECTORY_SEPARATOR;
+        if (isset($dirs[$directory])) {
             return false;
         }
         $filepath = $this->smarty->_realpath($filepath, true);
-        $directory = dirname($filepath) . DIRECTORY_SEPARATOR;
-        $_directory = array();
+        $directory = dirname($filepath).DIRECTORY_SEPARATOR;
+        $_directory = [];
         while (true) {
-             // test if the directory is trusted
-            if (isset($dirs[ $directory ])) {
-               return $_directory;
+            // test if the directory is trusted
+            if (isset($dirs[$directory])) {
+                return $_directory;
             }
             // abort if we've reached root
             if (!preg_match('#[\\\/][^\\\/]+[\\\/]$#', $directory)) {
                 break;
             }
             // remember the directory to add it to _resource_dir in case we're successful
-            $_directory[ $directory ] = true;
-           // bubble up one level
+            $_directory[$directory] = true;
+            // bubble up one level
             $directory = preg_replace('#[\\\/][^\\\/]+[\\\/]$#', DIRECTORY_SEPARATOR, $directory);
         }
 
@@ -667,21 +686,23 @@ class Smarty_Security
     }
 
     /**
-     * Loads security class and enables security
+     * Loads security class and enables security.
      *
-     * @param \Smarty                 $smarty
-     * @param  string|Smarty_Security $security_class if a string is used, it must be class-name
+     * @param \Smarty                $smarty
+     * @param string|Smarty_Security $security_class if a string is used, it must be class-name
+     *
+     * @throws \SmartyException when an invalid class name is provided
      *
      * @return \Smarty current Smarty instance for chaining
-     * @throws \SmartyException when an invalid class name is provided
      */
     public static function enableSecurity(Smarty $smarty, $security_class)
     {
-        if ($security_class instanceof Smarty_Security) {
+        if ($security_class instanceof self) {
             $smarty->security_policy = $security_class;
+
             return $smarty;
         } elseif (is_object($security_class)) {
-            throw new SmartyException("Class '" . get_class($security_class) . "' must extend Smarty_Security.");
+            throw new SmartyException("Class '".get_class($security_class)."' must extend Smarty_Security.");
         }
         if ($security_class === null) {
             $security_class = $smarty->security_class;
@@ -693,10 +714,12 @@ class Smarty_Security
         } else {
             $smarty->security_policy = new $security_class($smarty);
         }
+
         return $smarty;
     }
+
     /**
-     * Start template processing
+     * Start template processing.
      *
      * @param $template
      *
@@ -704,30 +727,29 @@ class Smarty_Security
      */
     public function startTemplate($template)
     {
-        if ($this->max_template_nesting > 0 && $this->_current_template_nesting ++ >= $this->max_template_nesting) {
+        if ($this->max_template_nesting > 0 && $this->_current_template_nesting++ >= $this->max_template_nesting) {
             throw new SmartyException("maximum template nesting level of '{$this->max_template_nesting}' exceeded when calling '{$template->template_resource}'");
         }
     }
 
     /**
-     * Exit template processing
-     *
+     * Exit template processing.
      */
     public function endTemplate()
     {
         if ($this->max_template_nesting > 0) {
-            $this->_current_template_nesting --;
+            $this->_current_template_nesting--;
         }
     }
 
     /**
-     * Register callback functions call at start/end of template rendering
+     * Register callback functions call at start/end of template rendering.
      *
      * @param \Smarty_Internal_Template $template
      */
     public function registerCallBacks(Smarty_Internal_Template $template)
     {
-        $template->startRenderCallbacks[] = array($this, 'startTemplate');
-        $template->endRenderCallbacks[] = array($this, 'endTemplate');
+        $template->startRenderCallbacks[] = [$this, 'startTemplate'];
+        $template->endRenderCallbacks[] = [$this, 'endTemplate'];
     }
 }

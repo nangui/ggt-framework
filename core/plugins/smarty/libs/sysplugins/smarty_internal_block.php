@@ -1,65 +1,63 @@
 <?php
 
 /**
- * Smarty {block} tag class
+ * Smarty {block} tag class.
  *
- * @package    Smarty
- * @subpackage PluginsInternal
  * @author     Uwe Tews
  */
 class Smarty_Internal_Block
 {
     /**
-     * Block name
+     * Block name.
      *
      * @var string
      */
     public $name = '';
 
     /**
-     * Hide attribute
+     * Hide attribute.
      *
      * @var bool
      */
     public $hide = false;
 
     /**
-     * Append attribute
+     * Append attribute.
      *
      * @var bool
      */
     public $append = false;
 
     /**
-     * prepend attribute
+     * prepend attribute.
      *
      * @var bool
      */
     public $prepend = false;
 
     /**
-     * Block calls $smarty.block.child
+     * Block calls $smarty.block.child.
      *
      * @var bool
      */
     public $callsChild = false;
 
     /**
-     * Inheritance child block
+     * Inheritance child block.
      *
      * @var Smarty_Internal_Block|null
      */
     public $child = null;
 
     /**
-     * Inheritance calling parent block
+     * Inheritance calling parent block.
      *
      * @var Smarty_Internal_Block|null
      */
     public $parent = null;
 
     /**
-     * Inheritance Template index
+     * Inheritance Template index.
      *
      * @var int
      */
@@ -68,7 +66,7 @@ class Smarty_Internal_Block
     /**
      * Smarty_Internal_Block constructor.
      * - if outer level {block} of child template ($state === 1) save it as child root block
-     * - otherwise process inheritance and render
+     * - otherwise process inheritance and render.
      *
      * @param string   $name     block name
      * @param int|null $tplIndex index of outer level {block} if nested
@@ -80,7 +78,7 @@ class Smarty_Internal_Block
     }
 
     /**
-     * Compiled block code overloaded by {block} class
+     * Compiled block code overloaded by {block} class.
      *
      * @param \Smarty_Internal_Template $tpl
      */

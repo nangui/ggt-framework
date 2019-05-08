@@ -1,7 +1,7 @@
 <?php
 
 /* Inclusion des fichiers nécessaires */
-require('../core/_ini.php' );
+require '../core/_ini.php';
 
 $model = new Model($dao, ''); /* Mise en marche des requêtes basiques. */
 
@@ -40,7 +40,6 @@ if (isset($get['module']) && (isset($get['tribiens']) || isset($get['tridatatabl
     $_SESSION['frontend'][$module]['tri'] = $valeur;
 }
 
-
 if (isset($get['module']) && (isset($get['tribiens']) || isset($get['tridatatable']))) {
     extract($get);
 
@@ -48,15 +47,13 @@ if (isset($get['module']) && (isset($get['tribiens']) || isset($get['tridatatabl
 }
 
 if (isset($get['action']) && ($get['action'] == 'ajouteraupanier')) {
-
     extract($get);
 
     if (isset($_SESSION[$app]['emailalerte'])) {
-
         $donnees['commerce_id'] = $id;
         $donnees['email'] = $_SESSION[$app]['emailalerte'];
         $model->settable(VDC_PANIER);
-        $clause = 'email = "' . $_SESSION[$app]['emailalerte'] . '" AND commerce_id = ' . $donnees['commerce_id'];
+        $clause = 'email = "'.$_SESSION[$app]['emailalerte'].'" AND commerce_id = '.$donnees['commerce_id'];
         $exists = $model->getFreeCountClosure('commerce_id', $clause);
 
         if ($exists == 0) {
@@ -78,7 +75,7 @@ if (isset($get['action']) && ($get['action'] == 'supprimerdupanier')) {
     extract($get);
 
     $model->settable(VDC_PANIER);
-    $clause = 'email = "' . $_SESSION[$app]['emailalerte'] . '" AND commerce_id = ' . $id;
+    $clause = 'email = "'.$_SESSION[$app]['emailalerte'].'" AND commerce_id = '.$id;
     $exists = $model->getFreeCountClosure('commerce_id', $clause);
 
     if ($exists > 0) {
@@ -101,7 +98,6 @@ if (isset($get['action']) && ($get['action'] == 'recuperationalerte')) {
     $model->settable(VDC_AGENT_RECHERCHE);
 
     if (!empty($id)) {
-
         $alerte = $model->getAllById($id);
         if ($alerte) {
             $model->settable(_NOM_DBCOMMUNVILLES_TV);
@@ -111,7 +107,7 @@ if (isset($get['action']) && ($get['action'] == 'recuperationalerte')) {
             $alerte->id_ville_bien = [];
 
             foreach ($ville_bien_array as $ville_) {
-                $alerte->id_ville_bien[$ville_] = (!empty($ville_)) ? $model->getById('nom', $ville_) . ' (' . $model->getById('code_postal', $ville_) . ')' : '';
+                $alerte->id_ville_bien[$ville_] = (!empty($ville_)) ? $model->getById('nom', $ville_).' ('.$model->getById('code_postal', $ville_).')' : '';
             }
 
             $_SESSION[$app]['agentderecherche']['villebien'] = $alerte->id_ville_bien;
@@ -129,7 +125,6 @@ if (isset($get['action']) && ($get['action'] == 'recuperationalerte')) {
     exit();
 }
 
-
 if (isset($get['action']) && ($get['action'] == 'filtrerbudget')) {
     extract($get);
 
@@ -137,7 +132,7 @@ if (isset($get['action']) && ($get['action'] == 'filtrerbudget')) {
     if (!empty($valeur)) {
         $bg_research = ($valeur == 2 || $valeur == 3) ? $loyer_intervalle_recherche : $prix_intervalle_recherche;
         foreach ($bg_research as $key => $value) {
-            $options .= "<option value='" . $key . "'>" . $value . "</option>";
+            $options .= "<option value='".$key."'>".$value.'</option>';
         }
     }
 
@@ -155,23 +150,21 @@ if (isset($get['term']) && !empty($get['term'])) {
 
     $function = (!isset($ville)) ? 'selectVilleBien' : 'selectVille';
     $content_li = [];
-        
-    foreach ($found as $cle => $ville) {
 
-        $nom_a_afficher = $ville->nom . " (" . $ville->cp . ")";
+    foreach ($found as $cle => $ville) {
+        $nom_a_afficher = $ville->nom.' ('.$ville->cp.')';
         if (!isset($_SESSION[$app]['agentderecherche']['villebien'][$cle])) {
-            $content_li[] = "<li onclick='" . $function . "(\"" . $nom_a_afficher . "\", " . $cle . ");'>" . $nom_a_afficher . "</li>";
+            $content_li[] = "<li onclick='".$function.'("'.$nom_a_afficher.'", '.$cle.");'>".$nom_a_afficher.'</li>';
         }
     }
 
-    $content .= implode('', $content_li) . '</ul>';
+    $content .= implode('', $content_li).'</ul>';
 
     echo $content;
     exit();
 }
 
 if (isset($get['action']) && $get['action'] == 'autocompleteaddvillebien') {
-
     extract($get);
 
     if (!isset($_SESSION[$app]['agentderecherche']['villebien'])) {
@@ -188,7 +181,6 @@ if (isset($get['action']) && $get['action'] == 'autocompleteaddvillebien') {
 }
 
 if (isset($get['action']) && $get['action'] == 'autocompletesuppvillebien') {
-
     extract($get);
 
     if (isset($_SESSION[$app]['agentderecherche']['villebien'][$ville])) {
@@ -201,7 +193,6 @@ if (isset($get['action']) && $get['action'] == 'autocompletesuppvillebien') {
     exit();
 }
 
-
 if (isset($get['action']) && ($get['action'] == 'emptyallsearchsession')) {
     extract($get);
 
@@ -210,4 +201,3 @@ if (isset($get['action']) && ($get['action'] == 'emptyallsearchsession')) {
     }
     exit();
 }
-    

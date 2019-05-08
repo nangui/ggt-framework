@@ -1,9 +1,7 @@
 <?php
 /**
- * Smarty Internal Plugin Resource String
+ * Smarty Internal Plugin Resource String.
  *
- * @package    Smarty
- * @subpackage TemplateResources
  * @author     Uwe Tews
  * @author     Rodney Rehm
  */
@@ -11,35 +9,32 @@
 /**
  * Smarty Internal Plugin Resource String
  * Implements the strings as resource for Smarty template
- * {@internal unlike eval-resources the compiled state of string-resources is saved for subsequent access}}
- *
- * @package    Smarty
- * @subpackage TemplateResources
+ * {@internal unlike eval-resources the compiled state of string-resources is saved for subsequent access}.
  */
 class Smarty_Internal_Resource_String extends Smarty_Resource
 {
     /**
-     * populate Source Object with meta data from Resource
+     * populate Source Object with meta data from Resource.
      *
-     * @param  Smarty_Template_Source   $source    source object
-     * @param  Smarty_Internal_Template $_template template object
+     * @param Smarty_Template_Source   $source    source object
+     * @param Smarty_Internal_Template $_template template object
      *
      * @return void
      */
     public function populate(Smarty_Template_Source $source, Smarty_Internal_Template $_template = null)
     {
-        $source->uid = $source->filepath = sha1($source->name . $source->smarty->_joined_template_dir);
+        $source->uid = $source->filepath = sha1($source->name.$source->smarty->_joined_template_dir);
         $source->timestamp = $source->exists = true;
     }
 
     /**
-     * Load template's source from $resource_name into current template object
+     * Load template's source from $resource_name into current template object.
      *
      * @uses decode() to decode base64 and urlencoded template_resources
      *
-     * @param  Smarty_Template_Source $source source object
+     * @param Smarty_Template_Source $source source object
      *
-     * @return string                 template source
+     * @return string template source
      */
     public function getContent(Smarty_Template_Source $source)
     {
@@ -47,9 +42,9 @@ class Smarty_Internal_Resource_String extends Smarty_Resource
     }
 
     /**
-     * decode base64 and urlencode
+     * decode base64 and urlencode.
      *
-     * @param  string $string template_resource to decode
+     * @param string $string template_resource to decode
      *
      * @return string decoded template_resource
      */
@@ -68,26 +63,26 @@ class Smarty_Internal_Resource_String extends Smarty_Resource
     }
 
     /**
-     * modify resource_name according to resource handlers specifications
+     * modify resource_name according to resource handlers specifications.
      *
-     * @param  Smarty  $smarty        Smarty instance
-     * @param  string  $resource_name resource_name to make unique
-     * @param  boolean $isConfig      flag for config resource
+     * @param Smarty $smarty        Smarty instance
+     * @param string $resource_name resource_name to make unique
+     * @param bool   $isConfig      flag for config resource
      *
      * @return string unique resource name
      */
     public function buildUniqueResourceName(Smarty $smarty, $resource_name, $isConfig = false)
     {
-        return get_class($this) . '#' . $this->decode($resource_name);
+        return get_class($this).'#'.$this->decode($resource_name);
     }
 
     /**
      * Determine basename for compiled filename
      * Always returns an empty string.
      *
-     * @param  Smarty_Template_Source $source source object
+     * @param Smarty_Template_Source $source source object
      *
-     * @return string                 resource's basename
+     * @return string resource's basename
      */
     public function getBasename(Smarty_Template_Source $source)
     {
@@ -99,6 +94,7 @@ class Smarty_Internal_Resource_String extends Smarty_Resource
         *
         * @return bool
         */
+
     /**
      * @return bool
      */
@@ -107,4 +103,3 @@ class Smarty_Internal_Resource_String extends Smarty_Resource
         return false;
     }
 }
-
