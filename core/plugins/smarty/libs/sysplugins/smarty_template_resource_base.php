@@ -1,72 +1,70 @@
 <?php
 
 /**
- * Smarty Template Resource Base Object
+ * Smarty Template Resource Base Object.
  *
- * @package    Smarty
- * @subpackage TemplateResources
  * @author     Rodney Rehm
  */
 abstract class Smarty_Template_Resource_Base
 {
     /**
-     * Compiled Filepath
+     * Compiled Filepath.
      *
      * @var string
      */
     public $filepath = null;
 
     /**
-     * Compiled Timestamp
+     * Compiled Timestamp.
      *
-     * @var integer|bool
+     * @var int|bool
      */
     public $timestamp = false;
 
     /**
-     * Compiled Existence
+     * Compiled Existence.
      *
-     * @var boolean
+     * @var bool
      */
     public $exists = false;
 
     /**
-     * Template Compile Id (Smarty_Internal_Template::$compile_id)
+     * Template Compile Id (Smarty_Internal_Template::$compile_id).
      *
      * @var string
      */
     public $compile_id = null;
 
     /**
-     * Compiled Content Loaded
+     * Compiled Content Loaded.
      *
-     * @var boolean
+     * @var bool
      */
     public $processed = false;
 
     /**
-     * unique function name for compiled template code
+     * unique function name for compiled template code.
      *
      * @var string
      */
     public $unifunc = '';
 
     /**
-     * flag if template does contain nocache code sections
+     * flag if template does contain nocache code sections.
      *
      * @var bool
      */
     public $has_nocache_code = false;
 
     /**
-     * resource file dependency
+     * resource file dependency.
      *
      * @var array
      */
-    public $file_dependency = array();
+    public $file_dependency = [];
 
     /**
-     * Content buffer
+     * Content buffer.
      *
      * @var string
      */
@@ -75,31 +73,31 @@ abstract class Smarty_Template_Resource_Base
     /**
      * Included sub templates
      * - index name
-     * - value use count
+     * - value use count.
      *
      * @var int[]
      */
-    public $includes = array();
+    public $includes = [];
 
     /**
-     * Flag if this is a cache resource
+     * Flag if this is a cache resource.
      *
      * @var bool
      */
     public $isCache = false;
 
     /**
-     * Process resource
+     * Process resource.
      *
      * @param Smarty_Internal_Template $_template template object
      */
     abstract public function process(Smarty_Internal_Template $_template);
 
     /**
-     * get rendered template content by calling compiled or cached template code
+     * get rendered template content by calling compiled or cached template code.
      *
      * @param \Smarty_Internal_Template $_template
-     * @param string                    $unifunc function with template code
+     * @param string                    $unifunc   function with template code
      *
      * @throws \Exception
      */
@@ -108,6 +106,7 @@ abstract class Smarty_Template_Resource_Base
         $smarty = &$_template->smarty;
         $_template->isRenderingCache = $this->isCache;
         $level = ob_get_level();
+
         try {
             if (!isset($unifunc)) {
                 $unifunc = $this->unifunc;
@@ -125,8 +124,7 @@ abstract class Smarty_Template_Resource_Base
                 call_user_func($callback, $_template);
             }
             $_template->isRenderingCache = false;
-        }
-        catch (Exception $e) {
+        } catch (Exception $e) {
             $_template->isRenderingCache = false;
             while (ob_get_level() > $level) {
                 ob_end_clean();
@@ -134,12 +132,13 @@ abstract class Smarty_Template_Resource_Base
             if (isset($smarty->security_policy)) {
                 $smarty->security_policy->endTemplate();
             }
+
             throw $e;
         }
     }
 
     /**
-     * Get compiled time stamp
+     * Get compiled time stamp.
      *
      * @return int
      */
@@ -148,6 +147,7 @@ abstract class Smarty_Template_Resource_Base
         if ($this->exists && !$this->timestamp) {
             $this->timestamp = filemtime($this->filepath);
         }
+
         return $this->timestamp;
     }
 }

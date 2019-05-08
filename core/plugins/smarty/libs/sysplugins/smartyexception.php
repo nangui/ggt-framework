@@ -1,11 +1,9 @@
 <?php
 
 /**
- * Smarty exception class
- *
- * @package Smarty
+ * Smarty exception class.
  */
-class SmartyException extends Exception
+class smartyexception extends Exception
 {
     public static $escape = false;
 
@@ -14,6 +12,6 @@ class SmartyException extends Exception
      */
     public function __toString()
     {
-        return ' --> Smarty: ' . (self::$escape ? htmlentities($this->message) : $this->message) . ' <-- ';
+        return ' --> Smarty: '.(self::$escape ? htmlentities($this->message) : $this->message).' <-- ';
     }
 }

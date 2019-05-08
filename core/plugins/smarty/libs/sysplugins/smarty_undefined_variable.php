@@ -2,23 +2,19 @@
 
 /**
  * class for undefined variable object
- * This class defines an object for undefined variable handling
- *
- * @package    Smarty
- * @subpackage Template
+ * This class defines an object for undefined variable handling.
  */
 class Smarty_Undefined_Variable extends Smarty_Variable
 {
     /**
-     * Returns null for not existing properties
+     * Returns null for not existing properties.
      *
-     * @param  string $name
+     * @param string $name
      *
      * @return null
      */
     public function __get($name)
     {
-            return null;
     }
 
     /**

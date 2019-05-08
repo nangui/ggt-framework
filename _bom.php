@@ -23,37 +23,38 @@ $WIN = 0;
     </head>
     <body>
         <?php
-        $BOMBED = array();
+        $BOMBED = [];
         RecursiveFolder($HOME);
         echo '<h2>These files had UTF8 BOM, but i cleaned them:</h2><p class="FOUND">';
         foreach ($BOMBED as $utf) {
-            echo $utf . "<br />\n";
+            echo $utf."<br />\n";
         }
         echo '</p>';
 
 // Recursive finder
-        function RecursiveFolder($sHOME) {
+        function RecursiveFolder($sHOME)
+        {
             global $BOMBED, $WIN;
 
-            $win32 = ($WIN == 1) ? "\\" : "/";
+            $win32 = ($WIN == 1) ? '\\' : '/';
 
             $folder = dir($sHOME);
 
-            $foundfolders = array();
+            $foundfolders = [];
             while ($file = $folder->read()) {
-                if ($file != "." and $file != "..") {
-                    if (filetype($sHOME . $win32 . $file) == "dir") {
-                        $foundfolders[count($foundfolders)] = $sHOME . $win32 . $file;
+                if ($file != '.' and $file != '..') {
+                    if (filetype($sHOME.$win32.$file) == 'dir') {
+                        $foundfolders[count($foundfolders)] = $sHOME.$win32.$file;
                     } else {
-                        $content = file_get_contents($sHOME . $win32 . $file);
+                        $content = file_get_contents($sHOME.$win32.$file);
                         $BOM = SearchBOM($content);
                         if ($BOM) {
-                            $BOMBED[count($BOMBED)] = $sHOME . $win32 . $file;
+                            $BOMBED[count($BOMBED)] = $sHOME.$win32.$file;
 
                             // Remove first three chars from the file
                             $content = substr($content, 3);
-                            // Write to file 
-                            file_put_contents($sHOME . $win32 . $file, $content);
+                            // Write to file
+                            file_put_contents($sHOME.$win32.$file, $content);
                         }
                     }
                 }
@@ -68,9 +69,12 @@ $WIN = 0;
         }
 
 // Searching for BOM in files
-        function SearchBOM($string) {
-            if (substr($string, 0, 3) == pack("CCC", 0xef, 0xbb, 0xbf))
+        function SearchBOM($string)
+        {
+            if (substr($string, 0, 3) == pack('CCC', 0xef, 0xbb, 0xbf)) {
                 return true;
+            }
+
             return false;
         }
         ?>

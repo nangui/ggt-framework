@@ -1,9 +1,6 @@
 <?php
 /**
- * Smarty plugin
- *
- * @package    Smarty
- * @subpackage PluginsModifier
+ * Smarty plugin.
  */
 
 /**
@@ -14,9 +11,10 @@
  * Input:
  *          - string: input date string
  *          - format: strftime format for output
- *          - default_date: default date if $string is empty
+ *          - default_date: default date if $string is empty.
  *
  * @link   http://www.smarty.net/manual/en/language.modifier.date.format.php date_format (Smarty online manual)
+ *
  * @author Monte Ohrt <monte at ohrt dot com>
  *
  * @param string $string       input date string
@@ -25,6 +23,7 @@
  * @param string $formatter    either 'strftime' or 'auto'
  *
  * @return string |void
+ *
  * @uses   smarty_make_timestamp()
  */
 function smarty_modifier_date_format($string, $format = null, $default_date = '', $formatter = 'auto')
@@ -33,12 +32,12 @@ function smarty_modifier_date_format($string, $format = null, $default_date = ''
         $format = Smarty::$_DATE_FORMAT;
     }
     /**
-     * require_once the {@link shared.make_timestamp.php} plugin
+     * require_once the {@link shared.make_timestamp.php} plugin.
      */
     static $is_loaded = false;
     if (!$is_loaded) {
         if (!is_callable('smarty_make_timestamp')) {
-            require_once(SMARTY_PLUGINS_DIR . 'shared.make_timestamp.php');
+            require_once SMARTY_PLUGINS_DIR.'shared.make_timestamp.php';
         }
         $is_loaded = true;
     }
@@ -51,20 +50,20 @@ function smarty_modifier_date_format($string, $format = null, $default_date = ''
     }
     if ($formatter === 'strftime' || ($formatter === 'auto' && strpos($format, '%') !== false)) {
         if (Smarty::$_IS_WINDOWS) {
-            $_win_from = array('%D',
+            $_win_from = ['%D',
                                '%h',
                                '%n',
                                '%r',
                                '%R',
                                '%t',
-                               '%T');
-            $_win_to = array('%m/%d/%y',
+                               '%T', ];
+            $_win_to = ['%m/%d/%y',
                              '%b',
                              "\n",
                              '%I:%M:%S %p',
                              '%H:%M',
                              "\t",
-                             '%H:%M:%S');
+                             '%H:%M:%S', ];
             if (strpos($format, '%e') !== false) {
                 $_win_from[] = '%e';
                 $_win_to[] = sprintf('%\' 2d', date('j', $timestamp));

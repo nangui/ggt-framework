@@ -1,31 +1,29 @@
 <?php
 
 /**
- * Smarty error handler
+ * Smarty error handler.
  *
  *
- * @package    Smarty
- * @subpackage PluginsInternal
  * @author     Uwe Tews
  *
  * @deprecated
-Smarty does no longer use @filemtime()
+ * Smarty does no longer use @filemtime()
  */
 class Smarty_Internal_ErrorHandler
 {
     /**
-     * contains directories outside of SMARTY_DIR that are to be muted by muteExpectedErrors()
+     * contains directories outside of SMARTY_DIR that are to be muted by muteExpectedErrors().
      */
-    public static $mutedDirectories = array();
+    public static $mutedDirectories = [];
     /**
-     * error handler returned by set_error_handler() in self::muteExpectedErrors()
+     * error handler returned by set_error_handler() in self::muteExpectedErrors().
      */
     private static $previousErrorHandler = null;
 
     /**
-     * Enable error handler to mute expected messages
+     * Enable error handler to mute expected messages.
      *
-     * @return boolean
+     * @return bool
      */
     public static function muteExpectedErrors()
     {
@@ -45,7 +43,7 @@ class Smarty_Internal_ErrorHandler
                 - between file_exists() and filemtime() a possible race condition is opened,
                   which does not exist using the simple @filemtime() approach.
         */
-        $error_handler = array('Smarty_Internal_ErrorHandler', 'mutingErrorHandler');
+        $error_handler = ['Smarty_Internal_ErrorHandler', 'mutingErrorHandler'];
         $previous = set_error_handler($error_handler);
         // avoid dead loops
         if ($previous !== $error_handler) {
@@ -54,15 +52,15 @@ class Smarty_Internal_ErrorHandler
     }
 
     /**
-     * Error Handler to mute expected messages
+     * Error Handler to mute expected messages.
      *
      * @link http://php.net/set_error_handler
      *
-     * @param  integer $errno Error level
-     * @param          $errstr
-     * @param          $errfile
-     * @param          $errline
-     * @param          $errcontext
+     * @param int $errno      Error level
+     * @param     $errstr
+     * @param     $errfile
+     * @param     $errline
+     * @param     $errcontext
      *
      * @return bool
      */
@@ -70,11 +68,11 @@ class Smarty_Internal_ErrorHandler
     {
         $_is_muted_directory = false;
         // add the SMARTY_DIR to the list of muted directories
-        if (!isset(self::$mutedDirectories[ SMARTY_DIR ])) {
+        if (!isset(self::$mutedDirectories[SMARTY_DIR])) {
             $smarty_dir = realpath(SMARTY_DIR);
             if ($smarty_dir !== false) {
-                self::$mutedDirectories[ SMARTY_DIR ] =
-                    array('file' => $smarty_dir, 'length' => strlen($smarty_dir),);
+                self::$mutedDirectories[SMARTY_DIR] =
+                    ['file' => $smarty_dir, 'length' => strlen($smarty_dir)];
             }
         }
         // walk the muted directories and test against $errfile
@@ -84,12 +82,12 @@ class Smarty_Internal_ErrorHandler
                 $file = realpath($key);
                 if ($file === false) {
                     // this directory does not exist, remove and skip it
-                    unset(self::$mutedDirectories[ $key ]);
+                    unset(self::$mutedDirectories[$key]);
                     continue;
                 }
-                $dir = array('file' => $file, 'length' => strlen($file),);
+                $dir = ['file' => $file, 'length' => strlen($file)];
             }
-            if (!strncmp($errfile, $dir[ 'file' ], $dir[ 'length' ])) {
+            if (!strncmp($errfile, $dir['file'], $dir['length'])) {
                 $_is_muted_directory = true;
                 break;
             }

@@ -2,42 +2,42 @@
 
 /**
  * Smarty Resource Data Object
- * Meta Data Container for Template Files
+ * Meta Data Container for Template Files.
  *
- * @package    Smarty
- * @subpackage TemplateResources
  * @author     Rodney Rehm
+ *
  * @property string $content compiled content
  */
 class Smarty_Template_Compiled extends Smarty_Template_Resource_Base
 {
     /**
-     * nocache hash
+     * nocache hash.
      *
      * @var string|null
      */
     public $nocache_hash = null;
 
     /**
-     * get a Compiled Object of this source
+     * get a Compiled Object of this source.
      *
-     * @param  Smarty_Internal_Template $_template template object
+     * @param Smarty_Internal_Template $_template template object
      *
      * @return Smarty_Template_Compiled compiled object
      */
-    static function load($_template)
+    public static function load($_template)
     {
-        $compiled = new Smarty_Template_Compiled();
+        $compiled = new self();
         if ($_template->source->handler->hasCompiledHandler) {
             $_template->source->handler->populateCompiledFilepath($compiled, $_template);
         } else {
             $compiled->populateCompiledFilepath($_template);
         }
+
         return $compiled;
     }
 
     /**
-     * populate Compiled Object with compiled filepath
+     * populate Compiled Object with compiled filepath.
      *
      * @param Smarty_Internal_Template $_template template object
      **/
@@ -47,28 +47,28 @@ class Smarty_Template_Compiled extends Smarty_Template_Resource_Base
         $smarty = &$_template->smarty;
         $this->filepath = $smarty->getCompileDir();
         if (isset($_template->compile_id)) {
-            $this->filepath .= preg_replace('![^\w]+!', '_', $_template->compile_id) .
+            $this->filepath .= preg_replace('![^\w]+!', '_', $_template->compile_id).
                                ($smarty->use_sub_dirs ? DIRECTORY_SEPARATOR : '^');
         }
         // if use_sub_dirs, break file into directories
         if ($smarty->use_sub_dirs) {
-            $this->filepath .= $source->uid[ 0 ] . $source->uid[ 1 ] . DIRECTORY_SEPARATOR . $source->uid[ 2 ] .
-                               $source->uid[ 3 ] . DIRECTORY_SEPARATOR . $source->uid[ 4 ] . $source->uid[ 5 ] .
+            $this->filepath .= $source->uid[0].$source->uid[1].DIRECTORY_SEPARATOR.$source->uid[2].
+                               $source->uid[3].DIRECTORY_SEPARATOR.$source->uid[4].$source->uid[5].
                                DIRECTORY_SEPARATOR;
         }
-        $this->filepath .= $source->uid . '_';
+        $this->filepath .= $source->uid.'_';
         if ($source->isConfig) {
-            $this->filepath .= (int)$smarty->config_read_hidden + (int)$smarty->config_booleanize * 2 +
-                               (int)$smarty->config_overwrite * 4;
+            $this->filepath .= (int) $smarty->config_read_hidden + (int) $smarty->config_booleanize * 2 +
+                               (int) $smarty->config_overwrite * 4;
         } else {
-            $this->filepath .= (int)$smarty->merge_compiled_includes + (int)$smarty->escape_html * 2 +
+            $this->filepath .= (int) $smarty->merge_compiled_includes + (int) $smarty->escape_html * 2 +
                                (($smarty->merge_compiled_includes && $source->type === 'extends') ?
-                                   (int)$smarty->extends_recursion * 4 : 0);
+                                   (int) $smarty->extends_recursion * 4 : 0);
         }
-        $this->filepath .= '.' . $source->type;
+        $this->filepath .= '.'.$source->type;
         $basename = $source->handler->getBasename($source);
         if (!empty($basename)) {
-            $this->filepath .= '.' . $basename;
+            $this->filepath .= '.'.$basename;
         }
         if ($_template->caching) {
             $this->filepath .= '.cache';
@@ -81,18 +81,20 @@ class Smarty_Template_Compiled extends Smarty_Template_Resource_Base
     }
 
     /**
-     * render compiled template code
+     * render compiled template code.
      *
      * @param Smarty_Internal_Template $_template
      *
-     * @return string
      * @throws Exception
+     *
+     * @return string
      */
     public function render(Smarty_Internal_Template $_template)
     {
         // checks if template exists
         if (!$_template->source->exists) {
             $type = $_template->source->isConfig ? 'config' : 'template';
+
             throw new SmartyException("Unable to load {$type} '{$_template->source->type}:{$_template->source->name}'");
         }
         if ($_template->smarty->debugging) {
@@ -114,7 +116,7 @@ class Smarty_Template_Compiled extends Smarty_Template_Resource_Base
             $this->getRenderedTemplateCode($_template);
         }
         if ($_template->caching && $this->has_nocache_code) {
-            $_template->cached->hashes[ $this->nocache_hash ] = true;
+            $_template->cached->hashes[$this->nocache_hash] = true;
         }
         if ($_template->smarty->debugging) {
             $_template->smarty->_debug->end_render($_template);
@@ -122,7 +124,7 @@ class Smarty_Template_Compiled extends Smarty_Template_Resource_Base
     }
 
     /**
-     * load compiled template or compile from source
+     * load compiled template or compile from source.
      *
      * @param Smarty_Internal_Template $_smarty_tpl do not change variable name, is used by compiled template
      *
@@ -134,7 +136,7 @@ class Smarty_Template_Compiled extends Smarty_Template_Resource_Base
         $smarty = &$_smarty_tpl->smarty;
         if ($source->handler->recompiled) {
             $source->handler->process($_smarty_tpl);
-        } else if (!$source->handler->uncompiled) {
+        } elseif (!$source->handler->uncompiled) {
             if (!$this->exists || $smarty->force_compile ||
                 ($_smarty_tpl->compile_check && $source->getTimeStamp() > $this->getTimeStamp())
             ) {
@@ -145,7 +147,7 @@ class Smarty_Template_Compiled extends Smarty_Template_Resource_Base
                 $_smarty_tpl->compile_check = $compileCheck;
             } else {
                 $_smarty_tpl->mustCompile = true;
-                @include($this->filepath);
+                @include $this->filepath;
                 if ($_smarty_tpl->mustCompile) {
                     $this->compileTemplateSource($_smarty_tpl);
                     $compileCheck = $_smarty_tpl->compile_check;
@@ -160,7 +162,7 @@ class Smarty_Template_Compiled extends Smarty_Template_Resource_Base
     }
 
     /**
-     * compile template from source
+     * compile template from source.
      *
      * @param Smarty_Internal_Template $_template
      *
@@ -168,8 +170,8 @@ class Smarty_Template_Compiled extends Smarty_Template_Resource_Base
      */
     public function compileTemplateSource(Smarty_Internal_Template $_template)
     {
-        $this->file_dependency = array();
-        $this->includes = array();
+        $this->file_dependency = [];
+        $this->includes = [];
         $this->nocache_hash = null;
         $this->unifunc = null;
         // compile locking
@@ -182,13 +184,13 @@ class Smarty_Template_Compiled extends Smarty_Template_Resource_Base
             // call compiler
             $_template->loadCompiler();
             $this->write($_template, $_template->compiler->compileTemplate($_template));
-        }
-        catch (Exception $e) {
+        } catch (Exception $e) {
             // restore old timestamp in case of error
             if ($saved_timestamp && is_file($this->filepath)) {
                 touch($this->filepath, $saved_timestamp);
             }
             unset($_template->compiler);
+
             throw $e;
         }
         // release compiler object to free memory
@@ -196,13 +198,14 @@ class Smarty_Template_Compiled extends Smarty_Template_Resource_Base
     }
 
     /**
-     * Write compiled code by handler
+     * Write compiled code by handler.
      *
      * @param Smarty_Internal_Template $_template template object
      * @param string                   $code      compiled code
      *
-     * @return bool success
      * @throws \SmartyException
+     *
+     * @return bool success
      */
     public function write(Smarty_Internal_Template $_template, $code)
     {
@@ -211,16 +214,19 @@ class Smarty_Template_Compiled extends Smarty_Template_Resource_Base
                 $this->timestamp = $this->exists = is_file($this->filepath);
                 if ($this->exists) {
                     $this->timestamp = filemtime($this->filepath);
+
                     return true;
                 }
             }
+
             return false;
         }
+
         return true;
     }
 
     /**
-     * Read compiled content from handler
+     * Read compiled content from handler.
      *
      * @param Smarty_Internal_Template $_template template object
      *
@@ -231,28 +237,29 @@ class Smarty_Template_Compiled extends Smarty_Template_Resource_Base
         if (!$_template->source->handler->recompiled) {
             return file_get_contents($this->filepath);
         }
+
         return isset($this->content) ? $this->content : false;
     }
 
     /**
      * Load fresh compiled template by including the PHP file
-     * HHVM requires a work around because of a PHP incompatibility
+     * HHVM requires a work around because of a PHP incompatibility.
      *
      * @param \Smarty_Internal_Template $_smarty_tpl do not change variable name, is used by compiled template
      */
     private function loadCompiledTemplate(Smarty_Internal_Template $_smarty_tpl)
     {
         if (function_exists('opcache_invalidate')
-            && (!function_exists('ini_get') || strlen(ini_get("opcache.restrict_api")) < 1)
+            && (!function_exists('ini_get') || strlen(ini_get('opcache.restrict_api')) < 1)
         ) {
             opcache_invalidate($this->filepath, true);
-        } else if (function_exists('apc_compile_file')) {
+        } elseif (function_exists('apc_compile_file')) {
             apc_compile_file($this->filepath);
         }
         if (defined('HHVM_VERSION')) {
-            eval('?>' . file_get_contents($this->filepath));
+            eval('?>'.file_get_contents($this->filepath));
         } else {
-            include($this->filepath);
+            include $this->filepath;
         }
     }
 }

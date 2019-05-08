@@ -1,28 +1,26 @@
 <?php
 
 /**
- * Inline Runtime Methods render, setSourceByUid, setupSubTemplate
+ * Inline Runtime Methods render, setSourceByUid, setupSubTemplate.
  *
- * @package    Smarty
- * @subpackage PluginsInternal
  * @author     Uwe Tews
  *
  **/
 class Smarty_Internal_Runtime_UpdateCache
 {
     /**
-     * check client side cache
+     * check client side cache.
      *
      * @param \Smarty_Template_Cached  $cached
      * @param Smarty_Internal_Template $_template
-     * @param  string                  $content
+     * @param string                   $content
      */
     public function cacheModifiedCheck(Smarty_Template_Cached $cached, Smarty_Internal_Template $_template, $content)
     {
     }
 
     /**
-     * Cache was invalid , so render from compiled and write to cache
+     * Cache was invalid , so render from compiled and write to cache.
      *
      * @param \Smarty_Template_Cached   $cached
      * @param \Smarty_Internal_Template $_template
@@ -41,7 +39,7 @@ class Smarty_Internal_Runtime_UpdateCache
             $_template->smarty->_debug->start_cache($_template);
         }
         $this->removeNoCacheHash($cached, $_template, $no_output_filter);
-        $compile_check = (int)$_template->compile_check;
+        $compile_check = (int) $_template->compile_check;
         $_template->compile_check = Smarty::COMPILECHECK_OFF;
         if ($_template->_isSubTpl()) {
             $_template->compiled->unifunc = $_template->parent->compiled->unifunc;
@@ -57,7 +55,7 @@ class Smarty_Internal_Runtime_UpdateCache
     }
 
     /**
-     * Sanitize content and write it to cache resource
+     * Sanitize content and write it to cache resource.
      *
      * @param \Smarty_Template_Cached  $cached
      * @param Smarty_Internal_Template $_template
@@ -74,7 +72,7 @@ class Smarty_Internal_Runtime_UpdateCache
         $hash_array = $cached->hashes;
         $hash_array[$_template->compiled->nocache_hash] = true;
         $hash_array = array_keys($hash_array);
-        $nocache_hash = '(' . implode('|', $hash_array) . ')';
+        $nocache_hash = '('.implode('|', $hash_array).')';
         $_template->cached->has_nocache_code = false;
         // get text between non-cached items
         $cache_split =
@@ -96,21 +94,21 @@ class Smarty_Internal_Runtime_UpdateCache
                                $php_parts);
                 foreach ($php_split as $idx_php => $curr_php) {
                     $content .= $curr_php;
-                    if (isset($php_parts[ 0 ][ $idx_php ])) {
-                        $content .= "<?php echo '{$php_parts[ 1 ][ $idx_php ]}'; ?>\n";
+                    if (isset($php_parts[0][$idx_php])) {
+                        $content .= "<?php echo '{$php_parts[1][$idx_php]}'; ?>\n";
                     }
                 }
             } else {
                 $content .= $curr_split;
             }
-            if (isset($cache_parts[ 0 ][ $curr_idx ])) {
+            if (isset($cache_parts[0][$curr_idx])) {
                 $_template->cached->has_nocache_code = true;
-                $content .= $cache_parts[ 2 ][ $curr_idx ];
+                $content .= $cache_parts[2][$curr_idx];
             }
         }
         if (!$no_output_filter && !$_template->cached->has_nocache_code &&
-            (isset($_template->smarty->autoload_filters[ 'output' ]) ||
-             isset($_template->smarty->registered_filters[ 'output' ]))
+            (isset($_template->smarty->autoload_filters['output']) ||
+             isset($_template->smarty->registered_filters['output']))
         ) {
             $content = $_template->smarty->ext->_filterHandler->runFilter('output', $content, $_template);
         }
@@ -119,7 +117,7 @@ class Smarty_Internal_Runtime_UpdateCache
     }
 
     /**
-     * Writes the content to cache resource
+     * Writes the content to cache resource.
      *
      * @param Smarty_Internal_Template $_template
      * @param string                   $content
@@ -137,11 +135,12 @@ class Smarty_Internal_Runtime_UpdateCache
             $_template->loadCached();
         }
         $content = $_template->smarty->ext->_codeFrame->create($_template, $content, '', true);
+
         return $this->write($_template, $content);
     }
 
     /**
-     * Write this cache object to handler
+     * Write this cache object to handler.
      *
      * @param Smarty_Internal_Template $_template template object
      * @param string                   $content   content to cache

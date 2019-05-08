@@ -9,8 +9,9 @@
 //$nameTo = alias du nom du destinataire (optionnel)
 //A prevoir : txt_mail_defaut (Services informations), adr_mail_defaut (infos@....) et mdp_mail_defaut (...) dans site_settings
 
-function sendMail($nameFrom, $from, $to, $subject, $body, $nameTo = "", $fichiersJoints = "", $ical_content = "") {
-    require_once('plugins/mailer/class.phpmailer.php');
+function sendMail($nameFrom, $from, $to, $subject, $body, $nameTo = '', $fichiersJoints = '', $ical_content = '')
+{
+    require_once 'plugins/mailer/class.phpmailer.php';
 
     $mail = new PHPMailer();
     $mail->CharSet = 'utf-8';
@@ -20,18 +21,18 @@ function sendMail($nameFrom, $from, $to, $subject, $body, $nameTo = "", $fichier
     // 1 = errors and messages
     // 2 = messages only
     $mail->SMTPAuth = true; // enable SMTP authentication
-    $mail->SMTPSecure = "ssl"; // sets the prefix to the servier
-    $mail->Host = "smtp.gmail.com"; // sets GMAIL as the SMTP server
+    $mail->SMTPSecure = 'ssl'; // sets the prefix to the servier
+    $mail->Host = 'smtp.gmail.com'; // sets GMAIL as the SMTP server
     $mail->Port = 465; // set the SMTP port for the GMAIL server
-    $mail->Username = "mail@net-profil.com"; // GMAIL username
-    $mail->Password = "GgTNtpRofIl2018"; // GMAIL password
+    $mail->Username = 'mail@net-profil.com'; // GMAIL username
+    $mail->Password = 'GgTNtpRofIl2018'; // GMAIL password
 
     if ($from) {
         $mail->SetFrom($from, $nameFrom);
         $mail->AddReplyTo($from, $nameFrom);
     } else {
         $mail->SetFrom('no-reply@net-profil.com', 'Service Informations');
-        $mail->AddReplyTo("no-reply@net-profil.com", "Service Informations");
+        $mail->AddReplyTo('no-reply@net-profil.com', 'Service Informations');
     }
 
     $mail->Subject = $subject;
@@ -50,6 +51,7 @@ function sendMail($nameFrom, $from, $to, $subject, $body, $nameTo = "", $fichier
 
     if (!$mail->Send()) {
         echo $mail->ErrorInfo;
+
         return false;
     }
 

@@ -2,9 +2,9 @@
 
 ob_start();
 /*
- * 
+ *
  * Frontend index et routage.
- * 
+ *
  */
 
 require_once '../core/_ini.php';
@@ -14,7 +14,7 @@ if (!isset($action)) {
     $action = ($module == 'connexion') ? 'connexion' : 'index';
 }
 
-require 'modules/' . $module . '.php'; // Routage et choix template 
+require 'modules/'.$module.'.php'; // Routage et choix template
 $vue = '/index.tpl';
 
 /* Session; erreur et succes; form data */
@@ -37,8 +37,6 @@ $get['rs'] = $reseeauxsociaux;
 
 $oSmarty->assign('get', $get);
 
-$oSmarty->display($template . $vue);
+$oSmarty->display($template.$vue);
 
 ob_end_flush();
-
-

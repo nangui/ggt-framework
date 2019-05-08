@@ -1,17 +1,12 @@
 <?php
 /**
  * Smarty Internal Plugin Compile Include PHP
- * Compiles the {include_php} tag
+ * Compiles the {include_php} tag.
  *
- * @package    Smarty
- * @subpackage Compiler
  * @author     Uwe Tews
  */
 /**
- * Smarty Internal Plugin Compile Insert Class
- *
- * @package    Smarty
- * @subpackage Compiler
+ * Smarty Internal Plugin Compile Insert Class.
  */
 class Smarty_Internal_Compile_Include_Php extends Smarty_Internal_CompileBase
 {
@@ -19,50 +14,54 @@ class Smarty_Internal_Compile_Include_Php extends Smarty_Internal_CompileBase
      * Attribute definition: Overwrites base class.
      *
      * @var array
+     *
      * @see Smarty_Internal_CompileBase
      */
-    public $required_attributes = array('file');
+    public $required_attributes = ['file'];
 
     /**
      * Attribute definition: Overwrites base class.
      *
      * @var array
+     *
      * @see Smarty_Internal_CompileBase
      */
-    public $shorttag_order = array('file');
+    public $shorttag_order = ['file'];
 
     /**
      * Attribute definition: Overwrites base class.
      *
      * @var array
+     *
      * @see Smarty_Internal_CompileBase
      */
-    public $optional_attributes = array('once', 'assign');
+    public $optional_attributes = ['once', 'assign'];
 
     /**
-     * Compiles code for the {include_php} tag
+     * Compiles code for the {include_php} tag.
      *
-     * @param  array                                $args     array with attributes from parser
+     * @param array                                 $args     array with attributes from parser
      * @param \Smarty_Internal_TemplateCompilerBase $compiler compiler object
      *
-     * @return string
      * @throws \SmartyCompilerException
      * @throws \SmartyException
+     *
+     * @return string
      */
     public function compile($args, Smarty_Internal_TemplateCompilerBase $compiler)
     {
         if (!($compiler->smarty instanceof SmartyBC)) {
-            throw new SmartyException("{include_php} is deprecated, use SmartyBC class to enable");
+            throw new SmartyException('{include_php} is deprecated, use SmartyBC class to enable');
         }
         // check and get attributes
         $_attr = $this->getAttributes($compiler, $args);
-        /** @var Smarty_Internal_Template $_smarty_tpl
+        /** @var Smarty_Internal_Template
          * used in evaluated code
          */
         $_smarty_tpl = $compiler->template;
         $_filepath = false;
         $_file = null;
-        eval('$_file = @' . $_attr[ 'file' ] . ';');
+        eval('$_file = @'.$_attr['file'].';');
         if (!isset($compiler->smarty->security_policy) && file_exists($_file)) {
             $_filepath = $compiler->smarty->_realpath($_file, true);
         } else {
@@ -72,8 +71,8 @@ class Smarty_Internal_Compile_Include_Php extends Smarty_Internal_CompileBase
                 $_dir = $compiler->smarty->trusted_dir;
             }
             if (!empty($_dir)) {
-                foreach ((array)$_dir as $_script_dir) {
-                    $_path = $compiler->smarty->_realpath($_script_dir . DIRECTORY_SEPARATOR . $_file, true);
+                foreach ((array) $_dir as $_script_dir) {
+                    $_path = $compiler->smarty->_realpath($_script_dir.DIRECTORY_SEPARATOR.$_file, true);
                     if (file_exists($_path)) {
                         $_filepath = $_path;
                         break;
@@ -87,13 +86,13 @@ class Smarty_Internal_Compile_Include_Php extends Smarty_Internal_CompileBase
         if (isset($compiler->smarty->security_policy)) {
             $compiler->smarty->security_policy->isTrustedPHPDir($_filepath);
         }
-        if (isset($_attr[ 'assign' ])) {
+        if (isset($_attr['assign'])) {
             // output will be stored in a smarty variable instead of being displayed
-            $_assign = $_attr[ 'assign' ];
+            $_assign = $_attr['assign'];
         }
         $_once = '_once';
-        if (isset($_attr[ 'once' ])) {
-            if ($_attr[ 'once' ] === 'false') {
+        if (isset($_attr['once'])) {
+            if ($_attr['once'] === 'false') {
                 $_once = '';
             }
         }

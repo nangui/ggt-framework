@@ -7,22 +7,19 @@
  */
 
 /**
- * Description of Connect
+ * Description of Connect.
  *
  * @author Mohamed DIOUF
  */
-
-function _connect($host, $port, $user, $password, $db) {
-    
+function _connect($host, $port, $user, $password, $db)
+{
     try {
-        
-        $connexionBD = new PDO('mysql:host=' . $host . ';port=' . $port . ';dbname=' . $db, $user, $password);
+        $connexionBD = new PDO('mysql:host='.$host.';port='.$port.';dbname='.$db, $user, $password);
         $connexionBD->exec('SET NAMES utf8');
-        
+
         return $connexionBD;
     } catch (Exception $e) {
-        
-        echo 'Une erreur est survenue lors de la connexion à la base de donnée !' . $e->getMessage();
+        echo 'Une erreur est survenue lors de la connexion à la base de donnée !'.$e->getMessage();
         die();
     }
 }

@@ -1,10 +1,8 @@
 <?php
 /**
  * Smarty Internal Plugin Templateparser Parse Tree
- * These are classes to build parse tree in the template parser
+ * These are classes to build parse tree in the template parser.
  *
- * @package    Smarty
- * @subpackage Compiler
  * @author     Thue Kristensen
  * @author     Uwe Tews
  */
@@ -12,22 +10,19 @@
 /**
  * A complete smarty tag.
  *
- * @package    Smarty
- * @subpackage Compiler
  * @ignore
  */
 class Smarty_Internal_ParseTree_Tag extends Smarty_Internal_ParseTree
 {
-
     /**
-     * Saved block nesting level
+     * Saved block nesting level.
      *
      * @var int
      */
     public $saved_block_nesting;
 
     /**
-     * Create parse tree buffer for Smarty tag
+     * Create parse tree buffer for Smarty tag.
      *
      * @param \Smarty_Internal_Templateparser $parser parser object
      * @param string                          $data   content
@@ -39,7 +34,7 @@ class Smarty_Internal_ParseTree_Tag extends Smarty_Internal_ParseTree
     }
 
     /**
-     * Return buffer content
+     * Return buffer content.
      *
      * @param \Smarty_Internal_Templateparser $parser
      *
@@ -51,7 +46,7 @@ class Smarty_Internal_ParseTree_Tag extends Smarty_Internal_ParseTree
     }
 
     /**
-     * Return complied code that loads the evaluated output of buffer content into a temporary variable
+     * Return complied code that loads the evaluated output of buffer content into a temporary variable.
      *
      * @param \Smarty_Internal_Templateparser $parser
      *

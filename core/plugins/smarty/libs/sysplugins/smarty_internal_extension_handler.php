@@ -1,16 +1,15 @@
 <?php
 
 /**
- * Smarty Extension handler
+ * Smarty Extension handler.
  *
  * Load extensions dynamically
  *
  *
- * @package    Smarty
- * @subpackage PluginsInternal
  * @author     Uwe Tews
  *
  * Runtime extensions
+ *
  * @property Smarty_Internal_Runtime_CacheModify       $_cacheModify
  * @property Smarty_Internal_Runtime_CacheResourceFile $_cacheResourceFile
  * @property Smarty_Internal_Runtime_Capture           $_capture
@@ -39,30 +38,30 @@
  */
 class Smarty_Internal_Extension_Handler
 {
-
     public $objType = null;
 
     /**
      * Cache for property information from generic getter/setter
-     * Preloaded with names which should not use with generic getter/setter
+     * Preloaded with names which should not use with generic getter/setter.
      *
      * @var array
      */
-    private $_property_info     = array('AutoloadFilters' => 0, 'DefaultModifiers' => 0, 'ConfigVars' => 0,
+    private $_property_info = ['AutoloadFilters'          => 0, 'DefaultModifiers' => 0, 'ConfigVars' => 0,
                                         'DebugTemplate'   => 0, 'RegisteredObject' => 0, 'StreamVariable' => 0,
-                                        'TemplateVars'    => 0, 'Literals' => 'Literals',);#
+                                        'TemplateVars'    => 0, 'Literals' => 'Literals', ]; //
 
-    private $resolvedProperties = array();
+    private $resolvedProperties = [];
 
     /**
-     * Call external Method
+     * Call external Method.
      *
      * @param \Smarty_Internal_Data $data
      * @param string                $name external method names
      * @param array                 $args argument array
      *
-     * @return mixed
      * @throws SmartyException
+     *
+     * @return mixed
      */
     public function _callExternalMethod(Smarty_Internal_Data $data, $name, $args)
     {
@@ -71,9 +70,9 @@ class Smarty_Internal_Extension_Handler
         if (!isset($smarty->ext->$name)) {
             if (preg_match('/^((set|get)|(.*?))([A-Z].*)$/', $name, $match)) {
                 $basename = $this->upperCase($match[4]);
-                if (!isset($smarty->ext->$basename) && isset($this->_property_info[ $basename ]) &&
-                    is_string($this->_property_info[ $basename ])) {
-                    $class = 'Smarty_Internal_Method_' . $this->_property_info[ $basename ];
+                if (!isset($smarty->ext->$basename) && isset($this->_property_info[$basename]) &&
+                    is_string($this->_property_info[$basename])) {
+                    $class = 'Smarty_Internal_Method_'.$this->_property_info[$basename];
                     if (class_exists($class)) {
                         $classObj = new $class();
                         $methodes = get_class_methods($classObj);
@@ -83,14 +82,14 @@ class Smarty_Internal_Extension_Handler
                     }
                 }
                 if (!empty($match[2]) && !isset($smarty->ext->$name)) {
-                    $class = 'Smarty_Internal_Method_' . $this->upperCase($name);
+                    $class = 'Smarty_Internal_Method_'.$this->upperCase($name);
                     if (!class_exists($class)) {
                         $objType = $data->_objType;
                         $propertyType = false;
-                        if (!isset($this->resolvedProperties[ $match[0] ][ $objType ])) {
-                            $property = isset($this->resolvedProperties['property'][ $basename ]) ?
-                                $this->resolvedProperties['property'][ $basename ] :
-                                $property = $this->resolvedProperties['property'][ $basename ] = strtolower(join('_',
+                        if (!isset($this->resolvedProperties[$match[0]][$objType])) {
+                            $property = isset($this->resolvedProperties['property'][$basename]) ?
+                                $this->resolvedProperties['property'][$basename] :
+                                $property = $this->resolvedProperties['property'][$basename] = strtolower(implode('_',
                                                                                                                  preg_split('/([A-Z][^A-Z]*)/',
                                                                                                                             $basename,
                                                                                                                             -1,
@@ -99,22 +98,22 @@ class Smarty_Internal_Extension_Handler
 
                             if ($property !== false) {
                                 if (property_exists($data, $property)) {
-                                    $propertyType = $this->resolvedProperties[ $match[0] ][ $objType ] = 1;
-                                } else if (property_exists($smarty, $property)) {
-                                    $propertyType = $this->resolvedProperties[ $match[0] ][ $objType ] = 2;
+                                    $propertyType = $this->resolvedProperties[$match[0]][$objType] = 1;
+                                } elseif (property_exists($smarty, $property)) {
+                                    $propertyType = $this->resolvedProperties[$match[0]][$objType] = 2;
                                 } else {
-                                    $this->resolvedProperties['property'][ $basename ] = $property = false;
+                                    $this->resolvedProperties['property'][$basename] = $property = false;
                                 }
                             }
                         } else {
-                            $propertyType = $this->resolvedProperties[ $match[0] ][ $objType ];
-                            $property = $this->resolvedProperties['property'][ $basename ];
+                            $propertyType = $this->resolvedProperties[$match[0]][$objType];
+                            $property = $this->resolvedProperties['property'][$basename];
                         }
                         if ($propertyType) {
                             $obj = $propertyType === 1 ? $data : $smarty;
                             if ($match[2] === 'get') {
                                 return $obj->$property;
-                            } else if ($match[2] === 'set') {
+                            } elseif ($match[2] === 'set') {
                                 return $obj->$property = $args[0];
                             }
                         }
@@ -122,16 +121,17 @@ class Smarty_Internal_Extension_Handler
                 }
             }
         }
-        $callback = array($smarty->ext->$name, $name);
+        $callback = [$smarty->ext->$name, $name];
         array_unshift($args, $data);
         if (isset($callback) && $callback[0]->objMap | $data->_objType) {
             return call_user_func_array($callback, $args);
         }
-        return call_user_func_array(array(new Smarty_Internal_Undefined(), $name), $args);
+
+        return call_user_func_array([new Smarty_Internal_Undefined(), $name], $args);
     }
 
     /**
-     * Make first character of name parts upper case
+     * Make first character of name parts upper case.
      *
      * @param string $name
      *
@@ -141,33 +141,36 @@ class Smarty_Internal_Extension_Handler
     {
         $_name = explode('_', $name);
         $_name = array_map('ucfirst', $_name);
+
         return implode('_', $_name);
     }
 
     /**
-     * get extension object
+     * get extension object.
      *
      * @param string $property_name property name
      *
-     * @return mixed|Smarty_Template_Cached
      * @throws SmartyException
+     *
+     * @return mixed|Smarty_Template_Cached
      */
     public function __get($property_name)
     {
         // object properties of runtime template extensions will start with '_'
         if ($property_name[0] === '_') {
-            $class = 'Smarty_Internal_Runtime' . $this->upperCase($property_name);
+            $class = 'Smarty_Internal_Runtime'.$this->upperCase($property_name);
         } else {
-            $class = 'Smarty_Internal_Method_' . $this->upperCase($property_name);
+            $class = 'Smarty_Internal_Method_'.$this->upperCase($property_name);
         }
         if (!class_exists($class)) {
             return $this->$property_name = new Smarty_Internal_Undefined($class);
         }
+
         return $this->$property_name = new $class();
     }
 
     /**
-     * set extension property
+     * set extension property.
      *
      * @param string $property_name property name
      * @param mixed  $value         value
@@ -180,17 +183,17 @@ class Smarty_Internal_Extension_Handler
     }
 
     /**
-     * Call error handler for undefined method
+     * Call error handler for undefined method.
      *
      * @param string $name unknown method-name
      * @param array  $args argument array
      *
-     * @return mixed
      * @throws SmartyException
+     *
+     * @return mixed
      */
     public function __call($name, $args)
     {
-        return call_user_func_array(array(new Smarty_Internal_Undefined(), $name), array($this));
+        return call_user_func_array([new Smarty_Internal_Undefined(), $name], [$this]);
     }
-
 }
